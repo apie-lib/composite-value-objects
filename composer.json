@@ -1,0 +1,33 @@
+{
+    "name": "apie/composite-value-objects",
+    "description": "Helper methods to make composite value objects really quickly",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Pieter Jordaan",
+            "email": "pieter_jordaan@hotmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Apie\\CompositeValueObjects\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Apie\\Tests\\CompositeValueObjects\\": "tests/"
+        }
+    },
+    "require": {
+        "php": ">=7.1",
+        "ext-json": "*",
+        "apie/core": "self.version",
+        "apie/value-objects": "self.version",
+        "phpdocumentor/reflection-docblock": "4.*|5.*",
+        "symfony/polyfill-php80": "1.*"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.5"
+    }
+}
