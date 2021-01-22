@@ -22,8 +22,8 @@
     "require": {
         "php": ">=7.3",
         "ext-json": "*",
-        "apie/core": "self.version|dev-main",
-        "apie/value-objects": "self.version|dev-main",
+        "apie/core": "dev-main",
+        "apie/value-objects": "dev-main",
         "phpdocumentor/reflection-docblock": "4.*|5.*",
         "symfony/polyfill-php80": "1.*"
     },
