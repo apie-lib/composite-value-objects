@@ -1,6 +1,6 @@
 {
     "name": "apie/composite-value-objects",
-    "description": "Helper methods to make composite value objects really quickly",
+    "description": "Traits to build Apie-compatible value objects that are basically a composite of primitives/other value objects",
     "type": "library",
     "license": "MIT",
     "authors": [
@@ -20,7 +20,7 @@
         }
     },
     "require": {
-        "php": ">=7.1",
+        "php": ">=7.3",
         "ext-json": "*",
         "apie/core": "self.version",
         "apie/value-objects": "self.version",
