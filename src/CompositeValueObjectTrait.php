@@ -8,7 +8,6 @@ use Apie\CompositeValueObjects\Utils\MixedTypehint;
 use Apie\CompositeValueObjects\Utils\NullObject;
 use Apie\CompositeValueObjects\Utils\TypeUtilInterface;
 use Apie\CompositeValueObjects\Utils\TypeUtils;
-use Apie\ValueObjects\ValueObjectCompareInterface;
 use Apie\ValueObjects\ValueObjectInterface;
 use phpDocumentor\Reflection\DocBlock\Tags\Var_;
 use phpDocumentor\Reflection\DocBlockFactory;
@@ -76,11 +75,6 @@ trait CompositeValueObjectTrait
             $result[$fieldName] = $fieldType->toNative($this->$fieldName);
         }
         return $result;
-    }
-
-    public function isEqualTo(ValueObjectCompareInterface $to)
-    {
-        // TODO: Implement isEqualTo() method.
     }
 
     public function with(string $fieldName, $value): self

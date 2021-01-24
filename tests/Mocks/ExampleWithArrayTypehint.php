@@ -5,10 +5,9 @@ namespace Apie\Tests\CompositeValueObjects\Mocks;
 
 
 use Apie\CompositeValueObjects\CompositeValueObjectTrait;
-use Apie\ValueObjects\ValueObjectCompareInterface;
 use Apie\ValueObjects\ValueObjectInterface;
 
-class ExampleWithArrayTypehint implements ValueObjectInterface, ValueObjectCompareInterface
+class ExampleWithArrayTypehint implements ValueObjectInterface
 {
     use CompositeValueObjectTrait;
 

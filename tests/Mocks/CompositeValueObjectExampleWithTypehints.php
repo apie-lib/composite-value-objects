@@ -14,7 +14,7 @@ use phpDocumentor\Reflection\DocBlock\Tags\Var_;
 use phpDocumentor\Reflection\DocBlockFactory;
 use phpDocumentor\Reflection\Types\ContextFactory;
 
-class CompositeValueObjectExampleWithTypehints implements ValueObjectInterface, ValueObjectCompareInterface
+class CompositeValueObjectExampleWithTypehints implements ValueObjectInterface
 {
     use CompositeValueObjectTrait;
 

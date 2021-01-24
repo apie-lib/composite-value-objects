@@ -8,7 +8,7 @@ use Apie\CompositeValueObjects\CompositeValueObjectTrait;
 use Apie\ValueObjects\ValueObjectCompareInterface;
 use Apie\ValueObjects\ValueObjectInterface;
 
-class ExampleWithMissingTypehint implements ValueObjectInterface, ValueObjectCompareInterface
+class ExampleWithMissingTypehint implements ValueObjectInterface
 {
     use CompositeValueObjectTrait;
 

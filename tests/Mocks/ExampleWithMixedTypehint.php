@@ -7,7 +7,7 @@ use Apie\CompositeValueObjects\CompositeValueObjectTrait;
 use Apie\ValueObjects\ValueObjectCompareInterface;
 use Apie\ValueObjects\ValueObjectInterface;
 
-class ExampleWithMixedTypehint implements ValueObjectInterface, ValueObjectCompareInterface
+class ExampleWithMixedTypehint implements ValueObjectInterface
 {
     use CompositeValueObjectTrait;
 

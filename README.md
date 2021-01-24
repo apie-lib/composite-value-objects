@@ -19,7 +19,7 @@ typed properties or read php docs to figure out the types.
 Since value objects need to be immutable this package will not add setters and also no constructor as it depends on a
 value object what fields are required for construction. It will add a with method that allows you to make a new value object
 with the changed value. Objects using this trait can only use other objects implementing ValueObjectInterface as we
-can not garantuee that an object in the value object is immutable.
+can not guarantee that an object in the value object is immutable.
 
 ### Example
 Here is a simple RangedDate value object using the Date value objects from
@@ -27,7 +27,7 @@ Here is a simple RangedDate value object using the Date value objects from
 
 ```php
 <?php
-class RangedDate implements ValueObjectInterface, ValueObjectCompareInterface
+class RangedDate implements ValueObjectInterface
 {
     use CompositeValueObjectTrait;
 
