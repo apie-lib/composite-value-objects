@@ -3,11 +3,8 @@
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/apie-lib/composite-value-objects/badges/quality-score.png?b=main)](https://scrutinizer-ci.com/g/apie-lib/composite-value-objects/?branch=main)
 [![Build Status](https://scrutinizer-ci.com/g/apie-lib/composite-value-objects/badges/build.png?b=main)](https://scrutinizer-ci.com/g/apie-lib/composite-value-objects/build-status/main)
 
-This package is part of the [https://github.com/apie-lib](Apie) library.
+This package is part of the [Apie](https://github.com/apie-lib) library.
 The code is maintained in a monorepo, so PR's need to be sent to the [monorepo](https://github.com/apie-lib/apie-lib-monorepo/pulls)
-
-## What does this package do?
-Traits to build Apie-compatible value objects that are basically a composite of primitives/other value objects
 
 ## Documentation
 This package contains everything to make composite value objects. What do I mean with that? They are basically
