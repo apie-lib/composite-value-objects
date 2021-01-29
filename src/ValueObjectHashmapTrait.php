@@ -3,6 +3,7 @@
 
 namespace Apie\CompositeValueObjects;
 
+use Apie\CompositeValueObjects\Exceptions\InvalidKeyException;
 use Apie\CompositeValueObjects\Exceptions\ObjectIsImmutableException;
 use Apie\CompositeValueObjects\Utils\TypeUtils;
 use ArrayIterator;
@@ -20,15 +21,29 @@ trait ValueObjectHashmapTrait
 
     public static function fromNative($value)
     {
-        $wantedType = self::getWantedType();
-        $refl = new ReflectionClass(__CLASS__);
+        $wantedType = static::getWantedType();
+        $refl = new ReflectionClass(static::class);
         $result = $refl->newInstanceWithoutConstructor();
-        foreach ($value as $key => $item) {
-            $type = TypeUtils::fromReflectionTypeToTypeUtilInterface(
-                (string) $key,
-                $wantedType
-            );
-            $result->list[$key] = $type->fromNative($item);
+
+        if (is_callable([$result, 'isValidKey'])) {
+            foreach ($value as $key => $item) {
+                $type = TypeUtils::fromReflectionTypeToTypeUtilInterface(
+                    (string) $key,
+                    $wantedType
+                );
+                if (!$result->isValidKey($key)) {
+                    throw new InvalidKeyException($key, $result);
+                }
+                $result->list[$key] = $type->fromNative($item);
+            }
+        } else {
+            foreach ($value as $key => $item) {
+                $type = TypeUtils::fromReflectionTypeToTypeUtilInterface(
+                    (string) $key,
+                    $wantedType
+                );
+                $result->list[$key] = $type->fromNative($item);
+            }
         }
         if (is_callable([$result, 'sanitizeValue'])) {
             $result->sanitizeValue();
@@ -37,10 +52,15 @@ trait ValueObjectHashmapTrait
         return $result;
     }
 
+    public function keys(): array
+    {
+        return array_keys($this->list);
+    }
+
     public function toNative()
     {
         $res = [];
-        $wantedType = self::getWantedType();
+        $wantedType = static::getWantedType();
         foreach ($this->list as $key => $item) {
             $type = TypeUtils::fromReflectionTypeToTypeUtilInterface(
                 (string) $key,

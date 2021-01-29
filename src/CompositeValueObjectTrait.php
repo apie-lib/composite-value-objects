@@ -3,6 +3,7 @@
 
 namespace Apie\CompositeValueObjects;
 
+use Apie\CompositeValueObjects\Exceptions\FieldMissingException;
 use Apie\CompositeValueObjects\Utils\Compound;
 use Apie\CompositeValueObjects\Utils\MixedTypehint;
 use Apie\CompositeValueObjects\Utils\NullObject;
@@ -22,7 +23,7 @@ trait CompositeValueObjectTrait
     {
         $docBlockFactory = DocBlockFactory::createInstance();
         $contextFactory = new ContextFactory();
-        $refl = new \ReflectionClass(__CLASS__);
+        $refl = new \ReflectionClass(static::class);
         $result = [];
         foreach ($refl->getProperties() as $property) {
             if (PHP_VERSION_ID >= 70400) {
@@ -55,14 +56,17 @@ trait CompositeValueObjectTrait
         if (!is_array($value)) {
             // TODO exception
         }
-        $refl = new \ReflectionClass(__CLASS__);
+        $refl = new \ReflectionClass(static::class);
         $object = $refl->newInstanceWithoutConstructor();
-        foreach (self::getFields() as $fieldName => $fieldType) {
+        foreach (static::getFields() as $fieldName => $fieldType) {
             if (array_key_exists($fieldName, $value)) {
                 $object->$fieldName = $fieldType->fromNative($value[$fieldName]);
             } else {
                 $object->$fieldName = $fieldType->fromMissingValue();
             }
+        }
+        if (is_callable([$object, 'validateProperties'])) {
+            $object->validateProperties();
         }
 
         return $object;
@@ -71,7 +75,7 @@ trait CompositeValueObjectTrait
     public function toNative()
     {
         $result = [];
-        foreach (self::getFields() as $fieldName => $fieldType) {
+        foreach (static::getFields() as $fieldName => $fieldType) {
             $result[$fieldName] = $fieldType->toNative($this->$fieldName);
         }
         return $result;
@@ -79,12 +83,15 @@ trait CompositeValueObjectTrait
 
     public function with(string $fieldName, $value): self
     {
-        $fields = self::getFields();
+        $fields = static::getFields();
         if (!isset($fields[$fieldName])) {
-            // TODO exception
+            throw new FieldMissingException($fieldName, $this);
         }
         $object = clone $this;
-        $object->$fieldName = $fields[$fieldName]->toNative($value);
+        $object->$fieldName = $fields[$fieldName]->fromNative($value);
+        if (is_callable([$object, 'validateProperties'])) {
+            $object->validateProperties();
+        }
         return $object;
     }
 }

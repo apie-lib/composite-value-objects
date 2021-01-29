@@ -45,7 +45,7 @@ class RangedDate implements ValueObjectInterface
         $this->validate();
     }
 
-    protected function validate()
+    protected function validateProperties()
     {
         if ($this->end->toDateTime() < $this->start->toDateTime()) {
             throw new LogicException('End date should be after start date');
