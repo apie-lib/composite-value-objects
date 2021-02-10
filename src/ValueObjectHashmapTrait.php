@@ -3,12 +3,11 @@
 
 namespace Apie\CompositeValueObjects;
 
-use Apie\CompositeValueObjects\Exceptions\InvalidKeyException;
 use Apie\CompositeValueObjects\Exceptions\ObjectIsImmutableException;
-use Apie\CompositeValueObjects\Utils\TypeUtils;
+use Apie\TypeJuggling\TypeUtilInterface;
+use Apie\ValueObjects\Exceptions\InvalidValueForValueObjectException;
 use ArrayIterator;
 use ReflectionClass;
-use ReflectionType;
 
 trait ValueObjectHashmapTrait
 {
@@ -17,33 +16,18 @@ trait ValueObjectHashmapTrait
      */
     private $list = [];
 
-    abstract protected static function getWantedType(): ReflectionType;
+    abstract protected static function getWantedType(string $key): TypeUtilInterface;
 
     public static function fromNative($value)
     {
-        $wantedType = static::getWantedType();
         $refl = new ReflectionClass(static::class);
         $result = $refl->newInstanceWithoutConstructor();
-
-        if (is_callable([$result, 'isValidKey'])) {
-            foreach ($value as $key => $item) {
-                $type = TypeUtils::fromReflectionTypeToTypeUtilInterface(
-                    (string) $key,
-                    $wantedType
-                );
-                if (!$result->isValidKey($key)) {
-                    throw new InvalidKeyException($key, $result);
-                }
-                $result->list[$key] = $type->fromNative($item);
-            }
-        } else {
-            foreach ($value as $key => $item) {
-                $type = TypeUtils::fromReflectionTypeToTypeUtilInterface(
-                    (string) $key,
-                    $wantedType
-                );
-                $result->list[$key] = $type->fromNative($item);
-            }
+        if (!is_iterable($value)) {
+            throw new InvalidValueForValueObjectException($value, static::class);
+        }
+        foreach ($value as $key => $item) {
+            $type = static::getWantedType($key);
+            $result->list[$key] = $type->fromNative($item);
         }
         if (is_callable([$result, 'sanitizeValue'])) {
             $result->sanitizeValue();
@@ -60,12 +44,8 @@ trait ValueObjectHashmapTrait
     public function toNative()
     {
         $res = [];
-        $wantedType = static::getWantedType();
         foreach ($this->list as $key => $item) {
-            $type = TypeUtils::fromReflectionTypeToTypeUtilInterface(
-                (string) $key,
-                $wantedType
-            );
+            $type = static::getWantedType($key);
             $res[$key] = $type->toNative($item);
         }
         return $res;

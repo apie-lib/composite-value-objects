@@ -3,18 +3,17 @@
 
 namespace Apie\CompositeValueObjects\ValueObjects;
 
-use Apie\CompositeValueObjects\Factory\ReflectionTypeFactory;
 use Apie\CompositeValueObjects\ValueObjectHashmapTrait;
 use Apie\CompositeValueObjects\ValueObjectListInterface;
-use Apie\CompositeValueObjects\ValueObjectListTrait;
-use ReflectionType;
+use Apie\TypeJuggling\StringLiteral;
+use Apie\TypeJuggling\TypeUtilInterface;
 
 final class StringHashmap implements ValueObjectListInterface
 {
     use ValueObjectHashmapTrait;
 
-    protected static function getWantedType(): ReflectionType
+    protected static function getWantedType(string $fieldName): TypeUtilInterface
     {
-        return ReflectionTypeFactory::createString(false);
+        return new StringLiteral($fieldName);
     }
 }

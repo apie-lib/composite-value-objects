@@ -4,15 +4,7 @@
 namespace Apie\Tests\CompositeValueObjects\Mocks;
 
 use Apie\CompositeValueObjects\CompositeValueObjectTrait;
-use Apie\CompositeValueObjects\Utils\Integer;
-use Apie\CompositeValueObjects\Utils\TypeUtilInterface;
-use Apie\CompositeValueObjects\Utils\TypeUtils;
-use Apie\ValueObjects\ValueObjectCompareInterface;
 use Apie\ValueObjects\ValueObjectInterface;
-use phpDocumentor\Reflection\DocBlock\Tags\InvalidTag;
-use phpDocumentor\Reflection\DocBlock\Tags\Var_;
-use phpDocumentor\Reflection\DocBlockFactory;
-use phpDocumentor\Reflection\Types\ContextFactory;
 
 class CompositeValueObjectExample implements ValueObjectInterface
 {
@@ -43,7 +35,8 @@ class CompositeValueObjectExample implements ValueObjectInterface
      */
     private $recursive;
 
-    private function __construct() {
+    private function __construct()
+    {
     }
 
     /**

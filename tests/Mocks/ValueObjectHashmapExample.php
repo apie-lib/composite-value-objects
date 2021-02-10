@@ -2,17 +2,17 @@
 
 namespace Apie\Tests\CompositeValueObjects\Mocks;
 
-use Apie\CompositeValueObjects\Factory\ReflectionTypeFactory;
-use Apie\CompositeValueObjects\ValueObjectListInterface;
 use Apie\CompositeValueObjects\ValueObjectHashmapTrait;
-use ReflectionType;
+use Apie\CompositeValueObjects\ValueObjectListInterface;
+use Apie\TypeJuggling\AnotherValueObject;
+use Apie\TypeJuggling\TypeUtilInterface;
 
 class ValueObjectHashmapExample implements ValueObjectListInterface
 {
     use ValueObjectHashmapTrait;
 
-    protected static function getWantedType(): ReflectionType
+    protected static function getWantedType(string $fieldName): TypeUtilInterface
     {
-        return ReflectionTypeFactory::createForClass(ExampleWithMissingTypehint::class);
+        return new AnotherValueObject($fieldName, ExampleWithMissingTypehint::class);
     }
 }

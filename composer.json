@@ -23,6 +23,7 @@
         "php": ">=7.3",
         "ext-json": "*",
         "apie/core": "dev-main",
+        "apie/type-juggling": "dev-main",
         "apie/value-objects": "dev-main",
         "phpdocumentor/reflection-docblock": "^4.3|5.*",
         "symfony/polyfill-php80": "1.*"

@@ -4,10 +4,10 @@
 namespace Apie\CompositeValueObjects;
 
 use Apie\CompositeValueObjects\Exceptions\ObjectIsImmutableException;
-use Apie\CompositeValueObjects\Utils\TypeUtils;
+use Apie\TypeJuggling\TypeUtilInterface;
+use Apie\ValueObjects\Exceptions\InvalidValueForValueObjectException;
 use ArrayIterator;
 use ReflectionClass;
-use ReflectionType;
 
 trait ValueObjectListTrait
 {
@@ -16,19 +16,18 @@ trait ValueObjectListTrait
      */
     private $list = [];
 
-    abstract protected static function getWantedType(): ReflectionType;
+    abstract protected static function getWantedType(string $key): TypeUtilInterface;
 
     public static function fromNative($value)
     {
         $counter = 0;
-        $wantedType = self::getWantedType();
-        $refl = new ReflectionClass(__CLASS__);
+        $refl = new ReflectionClass(static::class);
         $result = $refl->newInstanceWithoutConstructor();
+        if (!is_iterable($value)) {
+            throw new InvalidValueForValueObjectException($value, static::class);
+        }
         foreach ($value as $item) {
-            $type = TypeUtils::fromReflectionTypeToTypeUtilInterface(
-                (string) $counter,
-                $wantedType
-            );
+            $type = static::getWantedType((string) $counter);
             $result->list[$counter] = $type->fromNative($item);
             $counter++;
         }
@@ -42,12 +41,8 @@ trait ValueObjectListTrait
     public function toNative()
     {
         $res = [];
-        $wantedType = self::getWantedType();
         foreach ($this->list as $key => $item) {
-            $type = TypeUtils::fromReflectionTypeToTypeUtilInterface(
-                (string) $key,
-                $wantedType
-            );
+            $type = static::getWantedType((string) $key);
             $res[$key] = $type->toNative($item);
         }
         return $res;

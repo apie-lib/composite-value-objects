@@ -3,10 +3,10 @@
 
 namespace Apie\CompositeValueObjects\ValueObjects;
 
-use Apie\CompositeValueObjects\Factory\ReflectionTypeFactory;
 use Apie\CompositeValueObjects\ValueObjectListInterface;
 use Apie\CompositeValueObjects\ValueObjectListTrait;
-use ReflectionType;
+use Apie\TypeJuggling\StringLiteral;
+use Apie\TypeJuggling\TypeUtilInterface;
 
 final class UniqueStringList implements ValueObjectListInterface
 {
@@ -17,8 +17,8 @@ final class UniqueStringList implements ValueObjectListInterface
         $this->list = array_values(array_unique($this->list));
     }
 
-    protected static function getWantedType(): ReflectionType
+    protected static function getWantedType(string $fieldName): TypeUtilInterface
     {
-        return ReflectionTypeFactory::createString(false);
+        return new StringLiteral($fieldName);
     }
 }

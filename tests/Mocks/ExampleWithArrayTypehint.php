@@ -3,7 +3,6 @@
 
 namespace Apie\Tests\CompositeValueObjects\Mocks;
 
-
 use Apie\CompositeValueObjects\CompositeValueObjectTrait;
 use Apie\ValueObjects\ValueObjectInterface;
 

@@ -2,7 +2,7 @@
 
 namespace Apie\Tests\CompositeValueObjects\Factory;
 
-use Apie\CompositeValueObjects\Factory\ReflectionTypeFactory;
+use Apie\TypeJuggling\Factory\ReflectionTypeFactory;
 use PHPUnit\Framework\TestCase;
 
 class ReflectionTypeFactoryTest extends TestCase

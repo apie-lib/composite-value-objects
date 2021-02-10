@@ -3,7 +3,6 @@
 namespace Apie\Tests\CompositeValueObjects\ValueObjects;
 
 use Apie\CompositeValueObjects\ValueObjects\StringHashmap;
-use Apie\CompositeValueObjects\ValueObjects\StringList;
 use PHPUnit\Framework\TestCase;
 
 class StringHashmapTest extends TestCase

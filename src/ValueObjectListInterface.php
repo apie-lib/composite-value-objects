@@ -3,7 +3,6 @@
 
 namespace Apie\CompositeValueObjects;
 
-
 use Apie\ValueObjects\ValueObjectInterface;
 use ArrayAccess;
 use Countable;

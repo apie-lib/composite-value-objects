@@ -3,7 +3,6 @@
 namespace Apie\Tests\CompositeValueObjects\ValueObjects;
 
 use Apie\CompositeValueObjects\ValueObjects\IntegerList;
-use Apie\CompositeValueObjects\ValueObjects\StringList;
 use PHPUnit\Framework\TestCase;
 
 class IntegerListTest extends TestCase

@@ -9,7 +9,7 @@ use ReflectionClass;
 
 class InvalidKeyException extends ApieException
 {
-    public function __construct(string $key, ValueObjectInterface $valueObject)
+    public function __construct(string $key, ?ValueObjectInterface $valueObject)
     {
         parent::__construct(
             422,

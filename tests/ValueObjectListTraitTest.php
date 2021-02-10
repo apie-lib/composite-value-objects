@@ -2,7 +2,6 @@
 
 namespace Apie\Tests\CompositeValueObjects;
 
-use Apie\CompositeValueObjects\ValueObjectListTrait;
 use Apie\Tests\CompositeValueObjects\Mocks\ExampleWithMissingTypehint;
 use Apie\Tests\CompositeValueObjects\Mocks\ValueObjectListExample;
 use PHPUnit\Framework\TestCase;

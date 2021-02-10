@@ -3,7 +3,6 @@
 
 namespace Apie\CompositeValueObjects\Exceptions;
 
-
 use Apie\Core\Exceptions\ApieException;
 
 /**
