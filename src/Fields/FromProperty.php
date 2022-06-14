@@ -2,8 +2,8 @@
 namespace Apie\CompositeValueObjects\Fields;
 
 use Apie\Core\Exceptions\InvalidTypeException;
+use Apie\Core\ValueObjects\Interfaces\ValueObjectInterface;
 use Apie\Core\ValueObjects\Utils;
-use Apie\Core\ValueObjects\ValueObjectInterface;
 use ReflectionIntersectionType;
 use ReflectionProperty;
 use UnitEnum;

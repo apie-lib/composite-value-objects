@@ -1,7 +1,7 @@
 <?php
 namespace Apie\CompositeValueObjects\Fields;
 
-use Apie\Core\ValueObjects\ValueObjectInterface;
+use Apie\Core\ValueObjects\Interfaces\ValueObjectInterface;
 use UnitEnum;
 
 interface FieldInterface
