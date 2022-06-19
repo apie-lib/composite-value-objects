@@ -1,6 +1,7 @@
 <?php
 namespace Apie\CompositeValueObjects\Fields;
 
+use Apie\Core\Attributes\Optional;
 use Apie\Core\Exceptions\InvalidTypeException;
 use Apie\Core\ValueObjects\Interfaces\ValueObjectInterface;
 use Apie\Core\ValueObjects\Utils;
@@ -16,6 +17,18 @@ final class FromProperty implements FieldInterface
     {
         $this->property = $property;
         $property->setAccessible(true);
+    }
+
+    public function getTypehint(): string
+    {
+        return $this->property->getType()->getName();
+    }
+
+    public function isOptional(): bool
+    {
+        return $this->property->hasDefaultValue() 
+            || !empty($this->property->getAttributes(Optional::class))
+            || $this->property->getType()->allowsNull();
     }
 
     public function fromNative(ValueObjectInterface $instance, mixed $value)
@@ -34,10 +47,10 @@ final class FromProperty implements FieldInterface
 
     public function fillMissingField(ValueObjectInterface $instance)
     {
-        if (!$this->property->getType()->allowsNull()) {
+        if (!$this->isOptional()) {
             throw new InvalidTypeException('(missing value)', $this->property->getType()->getName());
         }
-        $this->property->setValue($instance, null);
+        $this->property->setValue($instance, $this->property->getDefaultValue());
     }
 
     public function getValue(ValueObjectInterface $instance): mixed

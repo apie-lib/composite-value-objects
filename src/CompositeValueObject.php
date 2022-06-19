@@ -2,6 +2,8 @@
 namespace Apie\CompositeValueObjects;
 
 use Apie\CompositeValueObjects\Fields\FieldInterface;
+use Apie\CompositeValueObjects\Fields\FromProperty;
+use Apie\Core\Attributes\Internal;
 use Apie\Core\ValueObjects\Utils;
 use ReflectionClass;
 
@@ -18,8 +20,18 @@ trait CompositeValueObject
     public static function getFields(): array
     {
         if (!isset(self::$fields)) {
-            // TODO
-            self::$fields = [];
+            $fields = [];
+            $refl = new ReflectionClass(__CLASS__);
+            foreach ($refl->getProperties() as $property) {
+                if ($property->isStatic()) {
+                    continue;
+                }
+                if (!empty($property->getAttributes(Internal::class))) {
+                    continue;
+                }
+                $fields[$property->getName()] = new FromProperty($property);
+            }
+            self::$fields = $fields;
         }
 
         return self::$fields;
@@ -32,7 +44,7 @@ trait CompositeValueObject
         $instance = $refl->newInstanceWithoutConstructor();
         foreach (self::getFields() as $fieldName => $field) {
             if (array_key_exists($fieldName, $input)) {
-                $field->fillField($instance, $input[$fieldName]);
+                $field->fromNative($instance, $input[$fieldName]);
             } else {
                 $field->fillMissingField($instance);
             }
