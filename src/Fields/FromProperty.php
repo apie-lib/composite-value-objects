@@ -26,7 +26,7 @@ final class FromProperty implements FieldInterface
 
     public function isOptional(): bool
     {
-        return $this->property->hasDefaultValue() 
+        return $this->property->hasDefaultValue()
             || !empty($this->property->getAttributes(Optional::class))
             || $this->property->getType()->allowsNull();
     }

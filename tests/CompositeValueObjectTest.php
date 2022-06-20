@@ -2,7 +2,6 @@
 namespace Apie\Tests\CompositeValueObjects;
 
 use Apie\CommonValueObjects\Enums\Gender;
-use Apie\CompositeValueObjects\ExampleClass;
 use Apie\Fixtures\ValueObjects\CompositeValueObjectExample;
 use PHPUnit\Framework\TestCase;
 
@@ -25,6 +24,5 @@ class CompositeValueObjectTest extends TestCase
         $this->assertEquals('12', $testItem->getString());
         $this->assertEquals(42, $testItem->getInteger());
         $this->assertEquals(1.5, $testItem->getFloatingPoint());
-
     }
 }
