@@ -1,9 +1,9 @@
 <?php
 namespace Apie\Tests\CompositeValueObjects;
 
-use Apie\CommonValueObjects\Enums\Gender;
 use Apie\Fixtures\Enums\ColorEnum;
 use Apie\Fixtures\ValueObjects\CompositeValueObjectExample;
+use Apie\Fixtures\ValueObjects\CompositeValueObjectWithUnionType;
 use PHPUnit\Framework\TestCase;
 
 class CompositeValueObjectTest extends TestCase
@@ -27,5 +27,43 @@ class CompositeValueObjectTest extends TestCase
         $this->assertEquals(true, $testItem->getTrueOrFalse());
         $this->assertEquals([], $testItem->getMixed());
         $this->assertEquals(ColorEnum::RED, $testItem->getColor());
+    }
+
+    /**
+     * @test
+     * @dataProvider unionDataProvider
+     */
+    public function it_can_process_union_types(string|int $expectedStringFirst, string|int $expectedIntFirst, array $input)
+    {
+        $testItem = CompositeValueObjectWithUnionType::fromNative($input);
+        $this->assertSame($expectedStringFirst, $testItem->getStringFirst());
+        $this->assertSame($expectedIntFirst, $testItem->getIntFirst());
+    }
+
+    public function unionDataProvider()
+    {
+        yield 'strings only' => [
+            'text',
+            'test',
+            ['stringFirst' => 'text', 'intFirst' => 'test'],
+        ];
+
+        yield 'integer' => [
+            12,
+            12,
+            ['stringFirst' => 12, 'intFirst' => 12],
+        ];
+
+        yield 'floating point' => [
+            '1.5',
+            '1.5',
+            ['stringFirst' => 1.5, 'intFirst' => 1.5],
+        ];
+
+        yield 'integer text' => [
+            12,
+            12,
+            ['stringFirst' => '12', 'intFirst' => '12'],
+        ];
     }
 }
