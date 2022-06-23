@@ -3,7 +3,9 @@ namespace Apie\Tests\CompositeValueObjects;
 
 use Apie\Fixtures\Enums\ColorEnum;
 use Apie\Fixtures\ValueObjects\CompositeValueObjectExample;
+use Apie\Fixtures\ValueObjects\CompositeValueObjectWithOptionalFields;
 use Apie\Fixtures\ValueObjects\CompositeValueObjectWithUnionType;
+use Generator;
 use PHPUnit\Framework\TestCase;
 
 class CompositeValueObjectTest extends TestCase
@@ -61,9 +63,40 @@ class CompositeValueObjectTest extends TestCase
         ];
 
         yield 'integer text' => [
-            12,
-            12,
+            '12',
+            '12',
             ['stringFirst' => '12', 'intFirst' => '12'],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider optionalProvider
+     */
+    public function it_can_process_optional_properties(array $expected, array $input)
+    {
+        $testItem = CompositeValueObjectWithOptionalFields::fromNative($input);
+        $this->assertEquals($expected, $testItem->toNative());
+    }
+
+    public function optionalProvider(): Generator
+    {
+        yield 'empty input' => [
+            ['withDefaultValue' => 'default value'],
+            []
+        ];
+        yield 'empty field input' => [
+            ['withDefaultValue' => 'default value', 'withOptionalAttribute' => ''],
+            ['withOptionalAttribute' => '']
+        ];
+        yield 'explicit null' => [
+            ['withDefaultValue' => null],
+            ['withDefaultValue' => null]
+        ];
+
+        yield 'internal properties are ignored' => [
+            ['withDefaultValue' => 'default value'],
+            ['isInternal' => '42']
         ];
     }
 }

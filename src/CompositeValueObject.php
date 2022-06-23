@@ -55,7 +55,9 @@ trait CompositeValueObject
     {
         $result = [];
         foreach (self::getFields() as $fieldName => $field) {
-            $result[$fieldName] = $field->toNative($this);
+            if ($field->isInitialized($this)) {
+                $result[$fieldName] = $field->toNative($this);
+            }
         }
         return $result;
     }

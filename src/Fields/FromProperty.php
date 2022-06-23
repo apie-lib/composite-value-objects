@@ -50,7 +50,15 @@ final class FromProperty implements FieldInterface
         if (!$this->isOptional()) {
             throw new InvalidTypeException('(missing value)', $this->property->getType()->getName());
         }
+        if (!empty($this->property->getAttributes(Optional::class))) {
+            return;
+        }
         $this->property->setValue($instance, $this->property->getDefaultValue());
+    }
+
+    public function isInitialized(ValueObjectInterface $instance): bool
+    {
+        return $this->property->isInitialized($instance);
     }
 
     public function getValue(ValueObjectInterface $instance): mixed
@@ -58,7 +66,7 @@ final class FromProperty implements FieldInterface
         return $this->property->getValue($instance);
     }
 
-    public function toNative(ValueObjectInterface $instance): array|string|int|float|bool|UnitEnum
+    public function toNative(ValueObjectInterface $instance): null|array|string|int|float|bool|UnitEnum
     {
         $value = $this->getValue($instance);
         return Utils::toNative($value);

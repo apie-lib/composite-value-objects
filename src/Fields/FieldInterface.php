@@ -12,5 +12,11 @@ interface FieldInterface
 
     public function getValue(ValueObjectInterface $instance): mixed;
 
-    public function toNative(ValueObjectInterface $instance): array|string|int|float|bool|UnitEnum;
+    public function toNative(ValueObjectInterface $instance): array|string|int|float|bool|UnitEnum|null;
+
+    public function isInitialized(ValueObjectInterface $instance): bool;
+
+    public function isOptional(): bool;
+
+    public function getTypehint(): string;
 }
