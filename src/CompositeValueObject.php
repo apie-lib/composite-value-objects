@@ -49,6 +49,9 @@ trait CompositeValueObject
                 $field->fillMissingField($instance);
             }
         }
+        if (is_callable([$instance, 'validateState'])) {
+            $instance->validateState();
+        }
         return $instance;
     }
     public function toNative(): array

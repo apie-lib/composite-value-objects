@@ -51,9 +51,9 @@ $address = StreetAddress::fromNative([
 
 ```
 
-Remember that the example has a constructor, but this is not required, but if you do forget to add one someone could use your
+Remember that the example has a constructor, but this is not required, but if you do forget to add one someone could misuser your
 value object incorrectly by just calling new ValueObject() without constructor arguments. You could also make a private constructor
-if you want people to make your value object with the fromNative method.
+to force people to use fromNative() to create your object.
 
 ### Optional fields
 By default all non-static fields are required and will throw an error if missing. To make a field optional you have 2 options.
@@ -72,7 +72,7 @@ final class StreetAddress implements ValueObjectInterface
 
     private function __construct()
     {
-        // this enforces other programers to use fromNative
+        // this enforces other programmers to use fromNative
     }
 
     private DatabaseText $street;
@@ -93,7 +93,7 @@ final class StreetAddress implements ValueObjectInterface
 
     private function __construct()
     {
-        // this enforces other programers to use fromNative
+        // this enforces other programmers to use fromNative
     }
 
     private DatabaseText $street;
@@ -103,13 +103,58 @@ final class StreetAddress implements ValueObjectInterface
     private DatabaseText $streetNumberSuffix;
 }
 ```
+Remember that in PHP you will get errors if you try to read typehinted properties if they are not set. toNative() will not return
+a value if they are not set.
 
+### Validation
+To add validation you can add a method validateState(). If the current state is invalid this method should throw an error.
+It is being called by fromNative() if the method exists and should also be called with any custom constructor.
+
+A good example is [time ranges](https://github.com/apie-lib/common-value-objects/blob/main/src/Ranges/DateTimeRange.php#L43) where the start time needs to be created before the end time.
+
+Here we give an example of a combination of first and last name and the total length of both fields should not extend 255 characters.
+
+```php
+<?php
+use Apie\CompositeValueObjects\CompositeValueObject;
+
+final class FirstNameAndLastName implements ValueObjectInterface, Stringable
+{
+    use CompositeValueObject;
+
+    private string $firstName;
+
+    private string $lastName;
+
+    public function __construct(private string $firstName, private string $lastName)
+    {
+        $this->validateState();
+    }
+
+    public function __toString(): string
+    {
+        return $this->firstName . ' ' . $this->lastName;
+    }
+
+    private function validateState(): void
+    {
+        if (strlen((string) $this) > 255) {
+            throw new RuntimeException('Length of first name and last name should not exceed 255 characters');
+        }
+    }
+}
 
 ### Union typehints
 The composite value object trait supports union typehints. To avoid accidental casting and that the reflection API of PHP
-will always return typehints in the same order we check specific types first.
+will always return typehints in the same order(you don't have control over this) we check specific types first.
 
-The order is objects+other types, floating point, number, and strings as lowest priority.
+If the input is a string and string is a typehint it will pick string.
+
+Otherwise the order of doing typecast is:
+- objects+other types
+- float
+- int
+- string
 
 ```php
 <?php
@@ -123,7 +168,7 @@ final class Example implements ValueObjectInterface
 
     private function __construct()
     {
-        // this enforces other programers to use fromNative
+        // this enforces other programmers to use fromNative
     }
 
     private string|int $value;
@@ -133,6 +178,8 @@ final class Example implements ValueObjectInterface
         return $this->value;
     }
 }
-// getValue() returns 12 as '12' can be cast to a integer.
+// getValue() returns '12' and is not casting to integer.
 Example::fromNative(['value' => '12'])->getValue();
+// getValue() returns 12 and is not casting to string.
+Example::fromNative(['value' => 12])->getValue();
 ```
