@@ -48,7 +48,11 @@ final class FromProperty implements FieldInterface
     public function fillMissingField(ValueObjectInterface $instance)
     {
         if (!$this->isOptional()) {
-            throw new InvalidTypeException('(missing value)', $this->property->getType()->getName());
+            $type = $this->property->getType();
+            if (null === $type || $type instanceof ReflectionIntersectionType) {
+                throw new InvalidTypeException($type, 'ReflectionUnionType|ReflectionNamedType');
+            }
+            throw new InvalidTypeException('(missing value)', $type->getName());
         }
         if (!empty($this->property->getAttributes(Optional::class))) {
             return;

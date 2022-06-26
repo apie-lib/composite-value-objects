@@ -1,7 +1,10 @@
 <?php
 namespace Apie\Tests\CompositeValueObjects;
 
+use Apie\Core\Exceptions\InvalidTypeException;
 use Apie\Fixtures\Enums\ColorEnum;
+use Apie\Fixtures\Incorrect\ValueObjects\CompositeValueObjectWithIntersectionTypehint;
+use Apie\Fixtures\Incorrect\ValueObjects\CompositeValueObjectWithoutTypehint;
 use Apie\Fixtures\ValueObjects\CompositeValueObjectExample;
 use Apie\Fixtures\ValueObjects\CompositeValueObjectWithOptionalFields;
 use Apie\Fixtures\ValueObjects\CompositeValueObjectWithUnionType;
@@ -97,6 +100,44 @@ class CompositeValueObjectTest extends TestCase
         yield 'internal properties are ignored' => [
             ['withDefaultValue' => 'default value'],
             ['isInternal' => '42']
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider incorrectObjectsProvider
+     */
+    public function it_throws_an_error_if_object_has_incorrect_properties(
+        string $exceptionClass,
+        string $expectedMessage,
+        string $className,
+        array $input): void
+    {
+        $this->expectException($exceptionClass);
+        $this->expectExceptionMessage($expectedMessage);
+        $testItem = $className::fromNative($input);
+        $testItem->toNative();
+    }
+
+    public function incorrectObjectsProvider(): iterable
+    {
+        yield 'no typehint, property provided' => [
+            InvalidTypeException::class,
+            'Type (null) is not expected, expected ReflectionUnionType|ReflectionNamedType',
+            CompositeValueObjectWithoutTypehint::class,
+            ['noTypehint' => 42],
+        ];
+        yield 'intersection typehint, property provided' => [
+            InvalidTypeException::class,
+            'Type (object "Apie\Core\ValueObjects\Interfaces\ValueObjectInterface&Apie\Core\Entities\EntityInterface") is not expected, expected ReflectionUnionType|ReflectionNamedType',
+            CompositeValueObjectWithIntersectionTypehint::class,
+            ['intersection' => 42],
+        ];
+        yield 'intersection typehint, no property provided' => [
+            InvalidTypeException::class,
+            'Type (object "Apie\Core\ValueObjects\Interfaces\ValueObjectInterface&Apie\Core\Entities\EntityInterface") is not expected, expected ReflectionUnionType|ReflectionNamedType',
+            CompositeValueObjectWithIntersectionTypehint::class,
+            [],
         ];
     }
 }
