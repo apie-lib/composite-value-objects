@@ -111,7 +111,8 @@ class CompositeValueObjectTest extends TestCase
         string $exceptionClass,
         string $expectedMessage,
         string $className,
-        array $input): void
+        array $input
+    ): void
     {
         $this->expectException($exceptionClass);
         $this->expectExceptionMessage($expectedMessage);
