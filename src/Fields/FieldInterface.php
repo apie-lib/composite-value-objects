@@ -6,9 +6,9 @@ use UnitEnum;
 
 interface FieldInterface
 {
-    public function fillField(ValueObjectInterface $instance, mixed $value);
+    public function fillField(ValueObjectInterface $instance, mixed $value): void;
 
-    public function fillMissingField(ValueObjectInterface $instance);
+    public function fillMissingField(ValueObjectInterface $instance): void;
 
     public function getValue(ValueObjectInterface $instance): mixed;
 

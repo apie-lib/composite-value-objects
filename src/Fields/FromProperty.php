@@ -31,7 +31,7 @@ final class FromProperty implements FieldInterface
             || $this->property->getType()->allowsNull();
     }
 
-    public function fromNative(ValueObjectInterface $instance, mixed $value)
+    public function fromNative(ValueObjectInterface $instance, mixed $value): void
     {
         $type = $this->property->getType();
         if (null === $type || $type instanceof ReflectionIntersectionType) {
@@ -40,12 +40,12 @@ final class FromProperty implements FieldInterface
         self::fillField($instance, Utils::toTypehint($type, $value));
     }
 
-    public function fillField(ValueObjectInterface $instance, mixed $value)
+    public function fillField(ValueObjectInterface $instance, mixed $value): void
     {
         $this->property->setValue($instance, $value);
     }
 
-    public function fillMissingField(ValueObjectInterface $instance)
+    public function fillMissingField(ValueObjectInterface $instance): void
     {
         if (!$this->isOptional()) {
             $type = $this->property->getType();
