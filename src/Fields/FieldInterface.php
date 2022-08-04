@@ -10,8 +10,13 @@ interface FieldInterface
 
     public function fillMissingField(ValueObjectInterface $instance): void;
 
+    public function fromNative(ValueObjectInterface $instance, mixed $value): void;
+
     public function getValue(ValueObjectInterface $instance): mixed;
 
+    /**
+     * @return mixed[]|string|int|float|bool|UnitEnum|null
+     */
     public function toNative(ValueObjectInterface $instance): array|string|int|float|bool|UnitEnum|null;
 
     public function isInitialized(ValueObjectInterface $instance): bool;

@@ -6,7 +6,9 @@ use Apie\Core\Exceptions\InvalidTypeException;
 use Apie\Core\ValueObjects\Interfaces\ValueObjectInterface;
 use Apie\Core\ValueObjects\Utils;
 use ReflectionIntersectionType;
+use ReflectionNamedType;
 use ReflectionProperty;
+use ReflectionUnionType;
 use UnitEnum;
 
 final class FromProperty implements FieldInterface
@@ -21,7 +23,11 @@ final class FromProperty implements FieldInterface
 
     public function getTypehint(): string
     {
-        return $this->property->getType()->getName();
+        $type = $this->property->getType();
+        if ($type instanceof ReflectionNamedType) {
+            return $type->getName();
+        }
+        return (string) $type;
     }
 
     public function isOptional(): bool
@@ -34,10 +40,11 @@ final class FromProperty implements FieldInterface
     public function fromNative(ValueObjectInterface $instance, mixed $value): void
     {
         $type = $this->property->getType();
-        if (null === $type || $type instanceof ReflectionIntersectionType) {
-            throw new InvalidTypeException($type, 'ReflectionUnionType|ReflectionNamedType');
+        if ($type instanceof ReflectionUnionType || $type instanceof ReflectionNamedType) {
+            self::fillField($instance, Utils::toTypehint($type, $value));
+            return;
         }
-        self::fillField($instance, Utils::toTypehint($type, $value));
+        throw new InvalidTypeException($type, 'ReflectionUnionType|ReflectionNamedType');
     }
 
     public function fillField(ValueObjectInterface $instance, mixed $value): void
@@ -52,7 +59,7 @@ final class FromProperty implements FieldInterface
             if (null === $type || $type instanceof ReflectionIntersectionType) {
                 throw new InvalidTypeException($type, 'ReflectionUnionType|ReflectionNamedType');
             }
-            throw new InvalidTypeException('(missing value)', $type->getName());
+            throw new InvalidTypeException('(missing value)', (string) $type);
         }
         if (!empty($this->property->getAttributes(Optional::class))) {
             return;

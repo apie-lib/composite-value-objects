@@ -13,10 +13,13 @@ use ReflectionClass;
 trait CompositeValueObject
 {
     /**
-     * @var FieldInterface[]
+     * @var array<string, FieldInterface>
      */
     private static array $fields;
 
+    /**
+     * @return array<string, FieldInterface>
+     */
     public static function getFields(): array
     {
         if (!isset(self::$fields)) {
@@ -54,6 +57,10 @@ trait CompositeValueObject
         }
         return $instance;
     }
+
+    /**
+     * @return array<string, mixed>
+     */
     public function toNative(): array
     {
         $result = [];
