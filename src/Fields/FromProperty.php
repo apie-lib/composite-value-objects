@@ -11,6 +11,9 @@ use ReflectionProperty;
 use ReflectionUnionType;
 use UnitEnum;
 
+/**
+ * FieldInterface implementation that reads a property from an object with reflection.
+ */
 final class FromProperty implements FieldInterface
 {
     private ReflectionProperty $property;
