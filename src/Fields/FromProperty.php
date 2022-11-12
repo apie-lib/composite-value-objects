@@ -28,7 +28,7 @@ final class FromProperty implements FieldInterface
     {
         $type = $this->property->getType();
         if ($type instanceof ReflectionNamedType) {
-            return $type->getName();
+            return ($type->allowsNull() ? $type->getName() : ($type->getName() . '|null'));
         }
         return (string) $type;
     }
