@@ -5,6 +5,8 @@ use Apie\CompositeValueObjects\Fields\FieldInterface;
 use Apie\CompositeValueObjects\Fields\FromProperty;
 use Apie\Core\Attributes\Internal;
 use Apie\Core\ValueObjects\Utils;
+use Apie\Serializer\Exceptions\ValidationException;
+use Exception;
 use ReflectionClass;
 
 /**
@@ -45,12 +47,20 @@ trait CompositeValueObject
         $input = Utils::toArray($input);
         $refl = new ReflectionClass(__CLASS__);
         $instance = $refl->newInstanceWithoutConstructor();
+        $errors = [];
         foreach (self::getFields() as $fieldName => $field) {
-            if (array_key_exists($fieldName, $input)) {
-                $field->fromNative($instance, $input[$fieldName]);
-            } else {
-                $field->fillMissingField($instance);
+            try {
+                if (array_key_exists($fieldName, $input)) {
+                    $field->fromNative($instance, $input[$fieldName]);
+                } else {
+                    $field->fillMissingField($instance);
+                }
+            } catch (Exception $error) {
+                $errors[$fieldName] = $error;
             }
+        }
+        if (!empty($errors)) {
+            throw ValidationException::createFromArray($errors);
         }
         if (is_callable([$instance, 'validateState'])) {
             $instance->validateState();
