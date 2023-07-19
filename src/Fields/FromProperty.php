@@ -13,6 +13,8 @@ use UnitEnum;
 
 /**
  * FieldInterface implementation that reads a property from an object with reflection.
+ * @deprecated use Apie\Core\ValueObjects\Fields\FromProperty instead
+ * @codeCoverageIgnore
  */
 final class FromProperty implements FieldInterface
 {

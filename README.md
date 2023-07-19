@@ -23,7 +23,7 @@ For example:
 ```php
 <?php
 use Apie\CommonValueObjects\Texts\DatabaseText;
-use Apie\CompositeValueObjects\CompositeValueObject;
+use Apie\Core\ValueObjects\CompositeValueObject;
 use Stringable;
 
 final class StreetAddress implements ValueObjectInterface, Stringable
@@ -70,7 +70,7 @@ Both examples below have the same result:
 ```php
 <?php
 use Apie\CommonValueObjects\Texts\DatabaseText;
-use Apie\CompositeValueObjects\CompositeValueObject;
+use Apie\Core\ValueObjects\CompositeValueObject;
 
 final class StreetAddress implements ValueObjectInterface
 {
@@ -90,7 +90,7 @@ final class StreetAddress implements ValueObjectInterface
 ```php
 <?php
 use Apie\CommonValueObjects\Texts\DatabaseText;
-use Apie\CompositeValueObjects\CompositeValueObject;
+use Apie\Core\ValueObjects\CompositeValueObject;
 use Apie\Core\Attributes\Optional;
 
 final class StreetAddress implements ValueObjectInterface
@@ -122,7 +122,7 @@ Here we give an example of a combination of first and last name and the total le
 
 ```php
 <?php
-use Apie\CompositeValueObjects\CompositeValueObject;
+use Apie\Core\ValueObjects\CompositeValueObject;
 
 final class FirstNameAndLastName implements ValueObjectInterface, Stringable
 {
@@ -165,7 +165,7 @@ Otherwise the order of doing typecast is:
 ```php
 <?php
 use Apie\CommonValueObjects\Texts\DatabaseText;
-use Apie\CompositeValueObjects\CompositeValueObject;
+use Apie\Core\ValueObjects\CompositeValueObject;
 use Apie\Core\Attributes\Optional;
 
 final class Example implements ValueObjectInterface

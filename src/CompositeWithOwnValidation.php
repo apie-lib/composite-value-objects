@@ -1,14 +1,11 @@
 <?php
 namespace Apie\CompositeValueObjects;
 
-use Apie\Core\ValueObjects\Interfaces\ValueObjectInterface;
+use Apie\Core\ValueObjects\CompositeWithOwnValidation as ValueObjectsCompositeWithOwnValidation;
 
 /**
- * Marker interface for composite values that validation/serialization is done by the composite value object
- * and not done by the regular serialization. This is needed if properties depend on each other for validation.
+ * @deprecated use Apie\Core\ValueObjects\CompositeWithOwnValidation instead
  */
-interface CompositeWithOwnValidation extends ValueObjectInterface
+interface CompositeWithOwnValidation extends ValueObjectsCompositeWithOwnValidation
 {
-    /** @return array<string|int, mixed> */
-    public function toNative(): array;
 }
