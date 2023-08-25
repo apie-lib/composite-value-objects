@@ -1,5 +1,5 @@
 <?php
-namespace Apie\CompositeValueObjects\ValueObjects;
+namespace Apie\CompositeValueObjects;
 
 use Apie\Core\ValueObjects\CompositeValueObject as ValueObjectsCompositeValueObject;
 
